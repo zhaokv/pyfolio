@@ -538,7 +538,7 @@ def rolling_beta(returns, factor_returns,
         return factor_returns.apply(partial(rolling_beta, returns),
                                     rolling_window=rolling_window)
     else:
-        out = pd.Series(index=returns.index)
+        out = pd.Series(index=returns.index, dtype='float64')
         for beg, end in zip(returns.index[0:-rolling_window],
                             returns.index[rolling_window:]):
             out.loc[end] = ep.beta(
