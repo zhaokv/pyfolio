@@ -351,7 +351,8 @@ def create_simple_tear_sheet(returns,
                                   live_start_date=live_start_date,
                                   cone_std=(1.0, 1.5, 2.0),
                                   ax=ax_rolling_returns)
-    ax_rolling_returns.set_title('Cumulative returns')
+    ax_rolling_returns.set_title('Cumulative returns\n', fontweight="bold", fontname='Arial',
+                 fontsize=14, color="black")
 
     if benchmark_rets is not None:
         plotting.plot_rolling_beta(returns, benchmark_rets, ax=ax_rolling_beta)
@@ -486,8 +487,17 @@ def create_returns_tear_sheet(returns, positions=None,
         vertical_sections += 1
 
     fig = plt.figure(figsize=(14, vertical_sections * 6))
+    # all_axes = fig.get_axes()
+    # for ax in all_axes:
+    #     for sp in ax.spines.values():
+    #         sp.set_visible(False)
+
     gs = gridspec.GridSpec(vertical_sections, 3, wspace=0.5, hspace=0.5)
     ax_rolling_returns = plt.subplot(gs[:2, :])
+    ax_rolling_returns.spines['top'].set_visible(False)
+    ax_rolling_returns.spines['right'].set_visible(False)
+    ax_rolling_returns.spines['bottom'].set_visible(False)
+    ax_rolling_returns.spines['left'].set_visible(False)
 
     i = 2
     ax_rolling_returns_vol_match = plt.subplot(gs[i, :],
@@ -524,7 +534,8 @@ def create_returns_tear_sheet(returns, positions=None,
         cone_std=cone_std,
         ax=ax_rolling_returns)
     ax_rolling_returns.set_title(
-        'Cumulative returns')
+        'Cumulative returns\n', fontweight="bold", fontname='Arial',
+                 fontsize=14, color="black")
 
     plotting.plot_rolling_returns(
         returns,
@@ -535,7 +546,8 @@ def create_returns_tear_sheet(returns, positions=None,
         legend_loc=None,
         ax=ax_rolling_returns_vol_match)
     ax_rolling_returns_vol_match.set_title(
-        'Cumulative returns volatility matched to benchmark')
+        'Cumulative returns volatility matched to benchmark\n', fontweight="bold", fontname='Arial',
+                 fontsize=14, color="black")
 
     plotting.plot_rolling_returns(
         returns,
@@ -545,7 +557,8 @@ def create_returns_tear_sheet(returns, positions=None,
         cone_std=cone_std,
         ax=ax_rolling_returns_log)
     ax_rolling_returns_log.set_title(
-        'Cumulative returns on logarithmic scale')
+        'Cumulative returns on logarithmic scale\n', fontweight="bold", fontname='Arial',
+                 fontsize=14, color="black")
 
     plotting.plot_returns(
         returns,
@@ -553,7 +566,8 @@ def create_returns_tear_sheet(returns, positions=None,
         ax=ax_returns,
     )
     ax_returns.set_title(
-        'Returns')
+        'Returns\n', fontweight="bold", fontname='Arial',
+                 fontsize=14, color="black")
 
     if benchmark_rets is not None:
         plotting.plot_rolling_beta(
@@ -942,7 +956,8 @@ def create_interesting_times_tear_sheet(returns, benchmark_rets=None,
             ax.legend(['Algo'],
                       loc=legend_loc, frameon=True, framealpha=0.5)
 
-        ax.set_title(name)
+        ax.set_title(name+'\n', fontweight="bold", fontname='Arial',
+                 fontsize=14, color="black")
         ax.set_ylabel('Returns')
         ax.set_xlabel('')
 

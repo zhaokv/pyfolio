@@ -40,6 +40,27 @@ from .utils import (APPROX_BDAYS_PER_MONTH,
                     MM_DISPLAY_UNIT)
 
 
+sns.set(font_scale=1.1, rc={
+    'figure.figsize': (10, 6),
+    'axes.facecolor': 'white',
+    'figure.facecolor': 'white',
+    'grid.color': '#dddddd',
+    'grid.linewidth': 0.5,
+    "lines.linewidth": 1.5,
+    'text.color': '#333333',
+    'xtick.color': '#666666',
+    'ytick.color': '#666666'
+})
+
+_FLATUI_COLORS = ["#fdd96e", "#207bbb", "#af4b64",
+                  "#4fa487", "#9b59b6", "#808080"]
+_GRAYSCALE_COLORS = ['silver', '#222222', 'gray'] * 3
+
+colors = _FLATUI_COLORS
+ls = '-'
+alpha = .8
+
+
 def customize(func):
     """
     Decorator to set plotting context and axes style during function call.
@@ -700,11 +721,13 @@ def plot_returns(returns,
         live_start_date = ep.utils.get_utc_timestamp(live_start_date)
         is_returns = returns.loc[returns.index < live_start_date]
         oos_returns = returns.loc[returns.index >= live_start_date]
-        is_returns.plot(ax=ax, color='g')
-        oos_returns.plot(ax=ax, color='r')
+        is_returns.plot(ax=ax, color=colors[1], lw=2.5, alpha=0.6)
+        oos_returns.plot(ax=ax, color=colors[2], lw=2.5, alpha=0.6)
 
     else:
-        returns.plot(ax=ax, color='g')
+        returns.plot(ax=ax, color=colors[1], lw=2.5, alpha=0.6)
+
+    ax.axhline(0.0, linestyle='--', color='#000000', lw=1, zorder=2)
 
     return ax
 
@@ -772,8 +795,9 @@ def plot_rolling_returns(returns,
 
     if ax is None:
         ax = plt.gca()
-
+    ax.set_facecolor('white')
     ax.set_xlabel('')
+    ax.set_xticklabels(returns.index.year)
     ax.set_ylabel('Cumulative returns')
     ax.set_yscale('log' if logy else 'linear')
 
@@ -792,7 +816,7 @@ def plot_rolling_returns(returns,
     if factor_returns is not None:
         cum_factor_returns = ep.cum_returns(
             factor_returns[cum_rets.index], 1.0)
-        cum_factor_returns.plot(lw=2, color='gray',
+        cum_factor_returns.plot(lw=2.5, color=colors[0],
                                 label=factor_returns.name, alpha=0.60,
                                 ax=ax, **kwargs)
 
@@ -804,7 +828,7 @@ def plot_rolling_returns(returns,
         is_cum_returns = cum_rets
         oos_cum_returns = pd.Series([], dtype='float64')
 
-    is_cum_returns.plot(lw=3, color='forestgreen', alpha=0.6,
+    is_cum_returns.plot(lw=2.5, color=colors[1], alpha=0.6,
                         label='Backtest', ax=ax, **kwargs)
 
     if len(oos_cum_returns) > 0:
@@ -827,11 +851,12 @@ def plot_rolling_returns(returns,
                 ax.fill_between(cone_bounds.index,
                                 cone_bounds[float(std)],
                                 cone_bounds[float(-std)],
-                                color='steelblue', alpha=0.5)
+                                color=colors[1], alpha=0.25)
 
     if legend_loc is not None:
         ax.legend(loc=legend_loc, frameon=True, framealpha=0.5)
-    ax.axhline(1.0, linestyle='--', color='black', lw=2)
+    ax.axhline(1.0, linestyle='--', color='#000000', lw=1, zorder=2)
+    # ax.axhline(0, ls="--", lw=1, color="#000000", zorder=2)
 
     return ax
 
